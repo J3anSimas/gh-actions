@@ -1,10 +1,8 @@
-name: to testando
+name: Run CICD
 
 on:
   push:
-    branches: [master, main]
-  pull_request:
-    branches: [master, main]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,6 +11,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+      - name: Connect To Server
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{secrets.SSH_HOST}}
+          key: ${{secrets.SSH_KEY}}
+          username: ${{secrets.SSH_USERNAME}}
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
@@ -22,3 +26,5 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build -t golang-app .
+
+
