@@ -7,6 +7,7 @@ WORKDIR /app
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 # Copy the built application
+
 COPY ./main /app/main
 
 # Change ownership of the application binary
