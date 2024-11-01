@@ -29,7 +29,7 @@ jobs:
           docker build -t myapp .
       - name: Deploy to DigitalOcean
         run: |
-          ssh -o StrictHostKeyChecking=no root@${{ secrets.DO_SERVER_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no root@${{secrets.SSH_HOST}} << 'EOF'
             docker stop myapp || true
             docker rm myapp || true
             docker rmi myapp || true
