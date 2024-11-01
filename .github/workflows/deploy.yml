@@ -11,13 +11,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      - name: Connect To Server
-        uses: appleboy/ssh-action@v1.1.0
-        with:
-          host: ${{secrets.SSH_HOST}}
-          key: ${{secrets.SSH_KEY}}
-          username: ${{secrets.SSH_USERNAME}}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
@@ -27,11 +20,17 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t myapp .
-      - name: Deploy to DigitalOcean
-        run: |
-          ssh -o StrictHostKeyChecking=no root@${{secrets.SSH_HOST}} << 'EOF'
+      - name: Connect To Server
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{secrets.SSH_HOST}}
+          key: ${{secrets.SSH_KEY}}
+          username: ${{secrets.SSH_USERNAME}}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            docker build -t myapp .
             docker stop myapp || true
             docker rm myapp || true
             docker rmi myapp || true
             docker run -d --name myapp -p 8080:8080 myapp
-          EOF
+
