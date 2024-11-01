@@ -24,8 +24,14 @@ jobs:
           go-version: "1.23"
       - name: Build
         run: go build -ldflags="-w -s" -o main
-      - name: Build Docker Image
+      - name: Build Docker image
         run: |
-          docker build -t golang-app .
-
-
+          docker build -t myapp .
+      - name: Deploy to DigitalOcean
+        run: |
+          ssh -o StrictHostKeyChecking=no root@${{ secrets.DO_SERVER_IP }} << 'EOF'
+            docker stop myapp || true
+            docker rm myapp || true
+            docker rmi myapp || true
+            docker run -d --name myapp -p 8080:8080 myapp
+          EOF
