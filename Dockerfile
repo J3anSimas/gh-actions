@@ -16,5 +16,6 @@ RUN chown appuser:appuser /app/main
 # Switch to the non-root user
 USER appuser
 EXPOSE 8080
-CMD ["/main"]
+ENV PATH="/app:${PATH}"
+CMD ["main"]
 
