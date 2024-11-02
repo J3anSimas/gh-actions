@@ -12,6 +12,7 @@ services:
       - "80:80"        # Porta para acessar via Nginx
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /certs:/etc/nginx/certs
     networks:
       - app-network
 
