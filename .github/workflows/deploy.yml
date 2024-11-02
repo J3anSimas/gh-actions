@@ -28,11 +28,5 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            git clone https://github.com/J3anSimas/gh-actions
-            cd gh-actions
-            docker build -t myapp .
-            docker stop myapp || true
-            docker rm myapp || true
-            docker rmi myapp || true
-            docker run -d --name myapp -p 8080:8080 myapp
+            ./deploy.sh
 
