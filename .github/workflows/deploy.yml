@@ -19,9 +19,6 @@ jobs:
         run: |
           cd app  
           go build -ldflags="-w -s" -o main
-      - name: Build Docker image
-        run: |
-          docker build -t myapp ./app
       - name: Connect To Server
         uses: appleboy/ssh-action@v1.1.0
         with:
